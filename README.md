@@ -1,15 +1,6 @@
 # xbox-store-viewer
 
-This is a template for Remix apps with the following features already set up:
-
-- Cloudflare Pages Functions deployment using wrangler.toml
-- React 19 RC
-- Biome linting
-- Auto import plugin with React imports set up
-- Tailwind CSS
-
-- 📖 [Remix docs](https://remix.run/docs)
-- 📖 [Remix Cloudflare docs](https://remix.run/guides/vite#cloudflare)
+When I purchased Elden Ring for Xbox in Japan, I originally got a version with Japanese only. But I found that I could get a version with English by changing my Xbox region to the US. I was curious how Xbox decides which version to download, or if there is anyway to inspect the different versions available before going through the trouble of changing my region. Here is a tool to help visualize the info from some Store API that I found. Hopefully it will not be disabled.
 
 ## Development
 
