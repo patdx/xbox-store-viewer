@@ -37,7 +37,7 @@ export default defineConfig({
 					type: true,
 				},
 			],
-			dirs: ['app/shared'],
+			dirs: ['app/shared', 'app/components', 'app/components/ui', 'app/lib'],
 			biomelintrc: {
 				enabled: true,
 			},
