@@ -1,4 +1,4 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
 import './tailwind.css'
 
 export const meta: MetaFunction = () => {
