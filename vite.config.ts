@@ -1,35 +1,30 @@
-import {
-	vitePlugin as remix,
-	cloudflareDevProxyVitePlugin as remixCloudflareDevProxy,
-} from '@remix-run/dev'
+import { reactRouter } from '@react-router/dev/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { defineConfig } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import tailwindcss from '@tailwindcss/vite'
+import { cloudflare } from '@cloudflare/vite-plugin'
+
+// import { cloudflareDevProxy } from '@react-router/dev/vite/cloudflare'
 
 export default defineConfig({
 	plugins: [
+		cloudflare({ viteEnvironment: { name: 'ssr' } }),
 		tailwindcss(),
 		AutoImport({
 			imports: [
 				'react',
 				{
 					ofetch: ['ofetch'],
-					'@remix-run/cloudflare': [['unstable_defineLoader', 'defineLoader']],
-					'@remix-run/react': [
+					'react-router': [
 						'Link',
 						'useLoaderData',
 						'useParams',
 						'useRevalidator',
 						'useNavigate',
-						'json',
+						'data',
 					],
 					valibot: [['*', 'v']],
-				},
-				{
-					from: '@remix-run/cloudflare',
-					type: true,
-					imports: ['LoaderFunctionArgs', 'MetaFunction'],
 				},
 				{
 					from: 'valibot',
@@ -44,16 +39,7 @@ export default defineConfig({
 				enabled: true,
 			},
 		}),
-		remixCloudflareDevProxy(),
-		remix({
-			future: {
-				v3_fetcherPersist: true,
-				v3_relativeSplatPath: true,
-				v3_throwAbortReason: true,
-				unstable_singleFetch: true,
-				unstable_fogOfWar: true,
-			},
-		}),
+		reactRouter(),
 		tsconfigPaths(),
 	],
 })

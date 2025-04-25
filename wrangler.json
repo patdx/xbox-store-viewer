@@ -1,0 +1,10 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"name": "xbox-store-viewer",
+	"compatibility_date": "2025-04-24",
+	"main": "./workers/app.ts",
+	"observability": {
+		"enabled": true,
+		"head_sampling_rate": 1
+	}
+}

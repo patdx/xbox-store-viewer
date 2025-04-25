@@ -10,7 +10,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
 
 	const product = await fetchProduct({ id: productId, market: region, lang })
 
-	return json(product)
+	return product
 }
 
 export default function Product() {
