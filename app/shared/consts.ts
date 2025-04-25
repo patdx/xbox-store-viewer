@@ -3,7 +3,7 @@ export const LANGUAGES = {
 	ja: ['Japanese', '日本語'],
 	zh: ['Chinese', '中文'],
 	ko: ['Korean', '한국어'],
-} satisfies Record<string, [string, string]>;
+} satisfies Record<string, [string, string]>
 
 export const MARKETS = {
 	US: ['United States', 'United States'],
@@ -12,4 +12,4 @@ export const MARKETS = {
 	CA: ['Canada', 'Canada'],
 	CN: ['China', '中国'],
 	KR: ['Korea', '韩国'],
-} satisfies Record<string, [string, string]>;
+} satisfies Record<string, [string, string]>

@@ -1,4 +1,4 @@
-import { Outlet } from '@remix-run/react';
+import { Outlet } from '@remix-run/react'
 
 export default function Main() {
 	return (
@@ -17,5 +17,5 @@ export default function Main() {
 			</ul>
 			<Outlet />
 		</div>
-	);
+	)
 }

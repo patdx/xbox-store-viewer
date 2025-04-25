@@ -1,20 +1,23 @@
 export function StyledLink({
 	children,
 	to,
-}: { children: React.ReactNode; to: string }) {
+}: {
+	children: React.ReactNode
+	to: string
+}) {
 	return (
 		<Link className="text-blue-700 underline visited:text-purple-900" to={to}>
 			{children}
 		</Link>
-	);
+	)
 }
 
 export function RegionSelector() {
-	const { market, product } = useParams();
+	const { market, product } = useParams()
 
-	const [lang, region] = market?.split('-') ?? [null, null];
+	const [lang, region] = market?.split('-') ?? [null, null]
 
-	const navigate = useNavigate();
+	const navigate = useNavigate()
 
 	// Lang dropdown and Region dropdown
 
@@ -29,11 +32,11 @@ export function RegionSelector() {
 						className="bg-gray-200 border border-gray-300 text-gray-700 py-1 px-2 rounded-md"
 						value={lang ?? ''}
 						onChange={(e) => {
-							const lang = e.target.value;
+							const lang = e.target.value
 							if (lang) {
 								navigate(`/${lang}-${region}/${product}`, {
 									preventScrollReset: true,
-								});
+								})
 							}
 						}}
 					>
@@ -53,11 +56,11 @@ export function RegionSelector() {
 						className="bg-gray-200 border border-gray-300 text-gray-700 py-1 px-2 rounded-md"
 						value={region ?? ''}
 						onChange={(e) => {
-							const region = e.target.value;
+							const region = e.target.value
 							if (region) {
 								navigate(`/${lang}-${region}/${product}`, {
 									preventScrollReset: true,
-								});
+								})
 							}
 						}}
 					>
@@ -71,5 +74,5 @@ export function RegionSelector() {
 				</div>
 			</div>
 		</>
-	);
+	)
 }

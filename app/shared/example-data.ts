@@ -1,4 +1,4 @@
-import type { Product } from './types';
+import type { Product } from './types'
 
 // From 2024-07-20
 
@@ -4608,7 +4608,7 @@ export const productUs: Product = {
 			HistoricalBestAvailabilities: [],
 		},
 	],
-};
+}
 
 export const productJp: Product = {
 	LastModifiedDate: '2024-07-09T14:12:02.2131430Z',
@@ -9052,4 +9052,4 @@ export const productJp: Product = {
 			HistoricalBestAvailabilities: [],
 		},
 	],
-};
+}

@@ -1,16 +1,16 @@
-import type { Availability } from '~/shared/types';
+import type { Availability } from '~/shared/types'
 
 const formatDate = (dateString?: string | null) => {
-	if (dateString == null) return null;
-	return new Date(dateString).toLocaleString();
-};
+	if (dateString == null) return null
+	return new Date(dateString).toLocaleString()
+}
 
 export const AvailabilityData = ({ data }: { data: Availability }) => {
-	const [isExpanded, setIsExpanded] = useState(false);
+	const [isExpanded, setIsExpanded] = useState(false)
 
 	const toggle = () => {
-		setIsExpanded((prev) => !prev);
-	};
+		setIsExpanded((prev) => !prev)
+	}
 
 	return (
 		<Card className="">
@@ -134,5 +134,5 @@ export const AvailabilityData = ({ data }: { data: Availability }) => {
 				) : null}
 			</CardContent>
 		</Card>
-	);
-};
+	)
+}

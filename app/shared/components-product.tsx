@@ -1,6 +1,6 @@
-import { Badge } from '~/components/ui/badge';
-import { Card, CardContent, CardHeader } from '~/components/ui/card';
-import type { Package, Product, Sku } from './types';
+import { Badge } from '~/components/ui/badge'
+import { Card, CardContent, CardHeader } from '~/components/ui/card'
+import type { Package, Product, Sku } from './types'
 
 export const ProductSchemaUI = ({ product }: { product: Product }) => {
 	return (
@@ -104,8 +104,8 @@ export const ProductSchemaUI = ({ product }: { product: Product }) => {
 				</>
 			)}
 		</div>
-	);
-};
+	)
+}
 
 const SkuCard = ({ sku }: { sku: Sku }) => {
 	return (
@@ -184,11 +184,11 @@ const SkuCard = ({ sku }: { sku: Sku }) => {
 				))}
 			</div>
 		</>
-	);
-};
+	)
+}
 
 const PackageCard = ({ package: pkg }: { package: Package }) => {
-	if (!pkg) return null;
+	if (!pkg) return null
 
 	return (
 		<Card className="w-full max-w-2xl">
@@ -285,5 +285,5 @@ const PackageCard = ({ package: pkg }: { package: Package }) => {
 				</dl>
 			</CardContent>
 		</Card>
-	);
-};
+	)
+}

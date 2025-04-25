@@ -1,13 +1,15 @@
 import {
 	vitePlugin as remix,
 	cloudflareDevProxyVitePlugin as remixCloudflareDevProxy,
-} from '@remix-run/dev';
-import AutoImport from 'unplugin-auto-import/vite';
-import { defineConfig } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
+} from '@remix-run/dev'
+import AutoImport from 'unplugin-auto-import/vite'
+import { defineConfig } from 'vite'
+import tsconfigPaths from 'vite-tsconfig-paths'
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
 	plugins: [
+		tailwindcss(),
 		AutoImport({
 			imports: [
 				'react',
@@ -54,4 +56,4 @@ export default defineConfig({
 		}),
 		tsconfigPaths(),
 	],
-});
+})

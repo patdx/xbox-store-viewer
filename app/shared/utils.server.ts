@@ -1,4 +1,4 @@
-import type { Product } from './types';
+import type { Product } from './types'
 
 // some of the values I found in source code of pages like:
 // https://www.xbox.com/en-US/games/store/elden-ring/9P3J32CTXLRZ/0010
@@ -34,27 +34,35 @@ export async function fetchProducts({
 	ids,
 	market,
 	lang,
-}: { ids: string[]; market: string; lang: string }) {
+}: {
+	ids: string[]
+	market: string
+	lang: string
+}) {
 	const params = new URLSearchParams({
 		market: market,
 		languages: lang,
 		bigIds: ids.join(','),
 		'MS-CV': 'DGU1mcuYo0WMMp+F.1',
-	});
+	})
 
-	const url = `https://displaycatalog.mp.microsoft.com/v7.0/products?${params}`;
+	const url = `https://displaycatalog.mp.microsoft.com/v7.0/products?${params}`
 
-	const result = await ofetch<{ Products: Product[] }>(url);
+	const result = await ofetch<{ Products: Product[] }>(url)
 
-	return result.Products;
+	return result.Products
 }
 
 export async function fetchProduct({
 	id,
 	market,
 	lang,
-}: { id: string; market: string; lang: string }): Promise<Product> {
-	const products = await fetchProducts({ ids: [id], market, lang });
+}: {
+	id: string
+	market: string
+	lang: string
+}): Promise<Product> {
+	const products = await fetchProducts({ ids: [id], market, lang })
 
-	return products[0];
+	return products[0]
 }
