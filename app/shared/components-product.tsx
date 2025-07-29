@@ -1,5 +1,6 @@
 import { Badge } from '~/components/ui/badge'
 import { Card, CardContent, CardHeader } from '~/components/ui/card'
+import { ErrorBoundary } from 'react-error-boundary'
 import type { Package, Product, Sku } from './types'
 
 export const ProductSchemaUI = ({ product }: { product: Product }) => {
@@ -179,7 +180,24 @@ const SkuCard = ({ sku }: { sku: Sku }) => {
 			<div className="grid grid-cols-2 gap-2">
 				{sku.Properties.Packages.map((pkg, index) => (
 					<div key={index}>
-						<PackageCard package={pkg} />
+						<ErrorBoundary
+							fallback={
+								<Card className="border-red-200 bg-red-50">
+									<CardHeader>
+										<h3 className="text-sm font-medium text-red-800">
+											Package Error
+										</h3>
+									</CardHeader>
+									<CardContent>
+										<p className="text-sm text-red-600">
+											Unable to display package information due to data error.
+										</p>
+									</CardContent>
+								</Card>
+							}
+						>
+							<PackageCard package={pkg} />
+						</ErrorBoundary>
 					</div>
 				))}
 			</div>
@@ -245,19 +263,20 @@ const PackageCard = ({ package: pkg }: { package: Package }) => {
 									<div>
 										Intelligent Delivery:{' '}
 										{pkg.FulfillmentData.PackageFeatures
-											.SupportsIntelligentDelivery
+											?.SupportsIntelligentDelivery
 											? 'Yes'
 											: 'No'}
 									</div>
 									<div>
 										Install Features:{' '}
-										{pkg.FulfillmentData.PackageFeatures.SupportsInstallFeatures
+										{pkg.FulfillmentData.PackageFeatures
+											?.SupportsInstallFeatures
 											? 'Yes'
 											: 'No'}
 									</div>
 									<div>
 										Install Recipes:{' '}
-										{pkg.FulfillmentData.PackageFeatures.SupportsInstallRecipes
+										{pkg.FulfillmentData.PackageFeatures?.SupportsInstallRecipes
 											? 'Yes'
 											: 'No'}
 									</div>

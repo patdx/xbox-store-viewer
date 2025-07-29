@@ -11,9 +11,7 @@
 		"typecheck": "tsc",
 		"typegen": "wrangler types",
 		"update-react": "pnpm install --save-exact react@rc react-dom@rc",
-		"lint": "biome lint",
-		"lint:fix": "biome lint --fix",
-		"format": "biome format --write",
+		"format": "prettier --write .",
 		"scn:add": "pnpx shadcn-ui@latest add"
 	},
 	"dependencies": {
@@ -26,13 +24,13 @@
 		"ofetch": "1.4.1",
 		"react": "rc",
 		"react-dom": "rc",
+		"react-error-boundary": "6.0.0",
 		"react-router": "^7.0.0",
 		"tailwind-merge": "3.3.1",
 		"tailwindcss-animate": "1.0.7",
 		"valibot": "1.1.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "1.9.4",
 		"@cloudflare/vite-plugin": "1.9.1",
 		"@cloudflare/workers-types": "4.20250710.0",
 		"@react-router/dev": "^7.0.0",

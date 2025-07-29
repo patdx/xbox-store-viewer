@@ -222,7 +222,7 @@ export interface FulfillmentData {
 	PackageFamilyName: string
 	SkuId: string
 	Content: null
-	PackageFeatures: PackageFeatures
+	PackageFeatures: PackageFeatures | null
 }
 
 export interface PackageFeatures {
