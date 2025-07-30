@@ -2,12 +2,12 @@ import { Outlet } from 'react-router'
 
 export default function Main() {
 	return (
-		<div className="font-sans p-4">
+		<div className="p-4 font-sans">
 			<h1 className="text-3xl">Xbox Store Viewer</h1>
 			<p>
 				View and compare Xbox Store products in different languages and regions
 			</p>
-			<ul className="list-disc mt-4 pl-6 space-y-2">
+			<ul className="mt-4 list-disc space-y-2 pl-6">
 				<li>
 					<StyledLink to="/en-US/9P3J32CTXLRZ">Elden Ring US</StyledLink>
 				</li>

@@ -24,8 +24,8 @@ export default function Product({ loaderData }: Route.ComponentProps) {
 			<RegionSelector />
 			<ErrorBoundary
 				fallback={
-					<div className="p-4 border border-red-200 bg-red-50 rounded-lg">
-						<h2 className="text-lg font-semibold text-red-800 mb-2">
+					<div className="rounded-lg border border-red-200 bg-red-50 p-4">
+						<h2 className="mb-2 text-lg font-semibold text-red-800">
 							Product Loading Error
 						</h2>
 						<p className="text-red-600">

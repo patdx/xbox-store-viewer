@@ -5,7 +5,7 @@ import type { Package, Product, Sku } from './types'
 
 export const ProductSchemaUI = ({ product }: { product: Product }) => {
 	return (
-		<div className="p-4 space-y-4">
+		<div className="space-y-4 p-4">
 			<h1 className="text-2xl font-bold">Product Schema UI</h1>
 
 			{product && (
@@ -22,7 +22,7 @@ export const ProductSchemaUI = ({ product }: { product: Product }) => {
 							</div>
 						</CardHeader>
 						<CardContent>
-							<ReadMore className="text-sm text-gray-600 mb-4 whitespace-pre-wrap">
+							<ReadMore className="mb-4 text-sm whitespace-pre-wrap text-gray-600">
 								{/* <p className=""> */}
 								{product.LocalizedProperties?.[0]?.ProductDescription ||
 									'No Description'}
@@ -69,7 +69,7 @@ export const ProductSchemaUI = ({ product }: { product: Product }) => {
 							{product.DisplaySkuAvailabilities?.map((skuAvail, index) => (
 								<div
 									key={index}
-									className="mb-4 flex flex-col gap-4 border rounded p-4"
+									className="mb-4 flex flex-col gap-4 rounded border p-4"
 								>
 									<SkuCard sku={skuAvail.Sku} />
 
@@ -111,7 +111,7 @@ export const ProductSchemaUI = ({ product }: { product: Product }) => {
 const SkuCard = ({ sku }: { sku: Sku }) => {
 	return (
 		<>
-			<div className="flex justify-between items-center">
+			<div className="flex items-center justify-between">
 				<h2 className="text-xl font-semibold">SKU: {sku.SkuId || 'N/A'}</h2>
 				<Badge variant="outline">{sku.SkuType || 'Unknown Type'}</Badge>
 			</div>
@@ -211,7 +211,7 @@ const PackageCard = ({ package: pkg }: { package: Package }) => {
 	return (
 		<Card className="w-full max-w-2xl">
 			<CardHeader>
-				<div className="flex justify-between items-center">
+				<div className="flex items-center justify-between">
 					<h2 className="text-xl font-semibold">Package ID: {pkg.PackageId}</h2>
 					<Badge variant="outline">{pkg.PackageFormat}</Badge>
 				</div>
@@ -297,7 +297,7 @@ const PackageCard = ({ package: pkg }: { package: Package }) => {
 						},
 					].map(({ label, value }) => (
 						<div key={label} className="border-b pb-2">
-							<dt className="font-semibold mb-1">{label}:</dt>
+							<dt className="mb-1 font-semibold">{label}:</dt>
 							<dd>{value}</dd>
 						</div>
 					))}

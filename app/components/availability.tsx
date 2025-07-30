@@ -22,7 +22,7 @@ export const AvailabilityData = ({ data }: { data: Availability }) => {
 			<CardContent>
 				<div className="space-y-4">
 					<div>
-						<h3 className="text-lg font-semibold mb-2">General Information</h3>
+						<h3 className="mb-2 text-lg font-semibold">General Information</h3>
 						<p>
 							<span className="font-medium">Availability ID:</span>{' '}
 							{data.AvailabilityId}
@@ -41,7 +41,7 @@ export const AvailabilityData = ({ data }: { data: Availability }) => {
 					</div>
 
 					<div>
-						<h3 className="text-lg font-semibold mb-2">Actions</h3>
+						<h3 className="mb-2 text-lg font-semibold">Actions</h3>
 						<div className="flex flex-wrap gap-2">
 							{data.Actions.map((action, index) => (
 								<Badge key={index} variant="secondary">
@@ -54,7 +54,7 @@ export const AvailabilityData = ({ data }: { data: Availability }) => {
 					{isExpanded && (
 						<>
 							<div>
-								<h3 className="text-lg font-semibold mb-2">Conditions</h3>
+								<h3 className="mb-2 text-lg font-semibold">Conditions</h3>
 								<p>
 									<span className="font-medium">Start Date:</span>{' '}
 									{formatDate(data.Conditions.StartDate)}
@@ -66,7 +66,7 @@ export const AvailabilityData = ({ data }: { data: Availability }) => {
 								<p>
 									<span className="font-medium">Allowed Platforms:</span>
 								</p>
-								<ul className="list-disc list-inside pl-4">
+								<ul className="list-inside list-disc pl-4">
 									{data.Conditions.ClientConditions.AllowedPlatforms.map(
 										(platform, index) => (
 											<li key={index}>
@@ -79,7 +79,7 @@ export const AvailabilityData = ({ data }: { data: Availability }) => {
 							</div>
 
 							<div>
-								<h3 className="text-lg font-semibold mb-2">
+								<h3 className="mb-2 text-lg font-semibold">
 									Order Management Data
 								</h3>
 								<p>
@@ -102,7 +102,7 @@ export const AvailabilityData = ({ data }: { data: Availability }) => {
 							</div>
 
 							<div>
-								<h3 className="text-lg font-semibold mb-2">Properties</h3>
+								<h3 className="mb-2 text-lg font-semibold">Properties</h3>
 								<p>
 									<span className="font-medium">Original Release Date:</span>{' '}
 									{formatDate(data.Properties.OriginalReleaseDate)}
@@ -110,7 +110,7 @@ export const AvailabilityData = ({ data }: { data: Availability }) => {
 							</div>
 
 							<div>
-								<h3 className="text-lg font-semibold mb-2">Markets</h3>
+								<h3 className="mb-2 text-lg font-semibold">Markets</h3>
 								<div className="flex flex-wrap gap-2">
 									{data.Markets.map((market, index) => (
 										<Badge key={index} variant="outline">
