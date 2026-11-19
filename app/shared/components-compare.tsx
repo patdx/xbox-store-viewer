@@ -309,7 +309,7 @@ export function MarketComparison({
 		buildCount === 1
 
 	return (
-		<Card className="border-blue-200">
+		<Card className="ring-blue-200">
 			<CardHeader>
 				<div className="flex flex-wrap items-start justify-between gap-3">
 					<div>

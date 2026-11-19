@@ -1,13 +1,15 @@
 import { reactRouter } from '@react-router/dev/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { defineConfig } from 'vite'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import tailwindcss from '@tailwindcss/vite'
 import { cloudflare } from '@cloudflare/vite-plugin'
 
 // import { cloudflareDevProxy } from '@react-router/dev/vite/cloudflare'
 
 export default defineConfig({
+	resolve: {
+		tsconfigPaths: true,
+	},
 	plugins: [
 		cloudflare({ viteEnvironment: { name: 'ssr' } }),
 		tailwindcss(),
@@ -40,6 +42,5 @@ export default defineConfig({
 			},
 		}),
 		reactRouter(),
-		tsconfigPaths(),
 	],
 })

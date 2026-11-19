@@ -8,6 +8,8 @@ Product pages fetch the same product ID from several store markets (US, JP, GB, 
 
 ## Development
 
+Requires Node.js 22.22 or newer. Dependencies are managed with pnpm 12.
+
 Run the dev server:
 
 ```sh

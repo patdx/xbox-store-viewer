@@ -1,0 +1,7 @@
+allowBuilds:
+  better-sqlite3: true
+  esbuild: true
+  workerd: true
+
+# The project tracks freshly published releases, so don't reject them.
+minimumReleaseAge: 0

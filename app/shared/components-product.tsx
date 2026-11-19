@@ -304,7 +304,7 @@ const SkuCard = ({ sku }: { sku: Sku }) => {
 					<div key={index}>
 						<ErrorBoundary
 							fallback={
-								<Card className="border-red-200 bg-red-50">
+								<Card className="bg-red-50 ring-red-200">
 									<CardHeader>
 										<h3 className="text-sm font-medium text-red-800">
 											Package Error
