@@ -53,5 +53,5 @@
 	"engines": {
 		"node": ">=22.22.0"
 	},
-	"packageManager": "pnpm@12.21.0+sha512.Zv2CeO4ok1zpUXktNDZ/869cQyonVkRYIwKVM4NbjaUpu+C+UTCv1W7QcT+4eJ5Hutgtk71a4v5UsVVi1idu8A=="
+	"packageManager": "pnpm@12.21.0"
 }
