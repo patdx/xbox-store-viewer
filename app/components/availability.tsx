@@ -1,8 +1,14 @@
+import {
+	formatDateTime,
+	formatMoney,
+	formatPrice,
+	taxLabel,
+} from '~/shared/format'
 import type { Availability } from '~/shared/types'
 
 const formatDate = (dateString?: string | null) => {
 	if (dateString == null) return null
-	return new Date(dateString).toLocaleString()
+	return formatDateTime(dateString)
 }
 
 export const AvailabilityData = ({ data }: { data: Availability }) => {
@@ -82,23 +88,50 @@ export const AvailabilityData = ({ data }: { data: Availability }) => {
 								<h3 className="mb-2 text-lg font-semibold">
 									Order Management Data
 								</h3>
-								<p>
-									<span className="font-medium">Currency:</span>{' '}
-									{data.OrderManagementData.Price.CurrencyCode}
-								</p>
-								<p>
-									<span className="font-medium">List Price:</span> $
-									{data.OrderManagementData.Price.ListPrice?.toFixed(2)}
-								</p>
-								<p>
-									<span className="font-medium">MSRP:</span> $
-									{data.OrderManagementData.Price.MSRP?.toFixed(2)}
-								</p>
-								<p>
-									<span className="font-medium">Wholesale Price:</span> $
-									{data.OrderManagementData.Price.WholesalePrice?.toFixed(2)} (
-									{data.OrderManagementData.Price.WholesaleCurrencyCode})
-								</p>
+								{(() => {
+									const price = data.OrderManagementData?.Price
+
+									if (!price) {
+										return (
+											<p className="text-muted-foreground">No price data</p>
+										)
+									}
+
+									return (
+										<>
+											<p>
+												<span className="font-medium">Currency:</span>{' '}
+												{price.CurrencyCode || '—'}
+											</p>
+											<p>
+												<span className="font-medium">List Price:</span>{' '}
+												{formatPrice({
+													listPrice: price.ListPrice,
+													currencyCode: price.CurrencyCode,
+												})}
+											</p>
+											<p>
+												<span className="font-medium">MSRP:</span>{' '}
+												{formatMoney(price.MSRP, price.CurrencyCode)}
+											</p>
+											{typeof price.WholesalePrice === 'number' && (
+												<p>
+													<span className="font-medium">Wholesale Price:</span>{' '}
+													{formatMoney(
+														price.WholesalePrice,
+														price.WholesaleCurrencyCode,
+													)}
+												</p>
+											)}
+											{taxLabel(price.TaxType) && (
+												<p>
+													<span className="font-medium">Tax:</span>{' '}
+													{taxLabel(price.TaxType)}
+												</p>
+											)}
+										</>
+									)
+								})()}
 							</div>
 
 							<div>

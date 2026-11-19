@@ -1,23 +1,85 @@
 import { Badge } from '~/components/ui/badge'
 import { Card, CardContent, CardHeader } from '~/components/ui/card'
+import type { ReactNode } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
+import { StyledLink } from './components'
+import {
+	formatBytes,
+	formatDateTime,
+	languageName,
+	uniqueLanguageNames,
+} from './format'
 import type { Package, Product, Sku } from './types'
 
-export const ProductSchemaUI = ({ product }: { product: Product }) => {
-	return (
-		<div className="space-y-4 p-4">
-			<h1 className="text-2xl font-bold">Product Schema UI</h1>
+export const ProductSchemaUI = ({
+	product,
+	lang,
+	region,
+}: {
+	product: Product
+	lang?: string
+	region?: string
+}) => {
+	const productHref = (id: string) =>
+		lang && region ? `/${lang}-${region}/${id}` : '#'
 
+	const bundledProducts = [
+		...new Map(
+			(product.DisplaySkuAvailabilities ?? [])
+				.flatMap((skuAvailability) => {
+					return (skuAvailability.Sku.Properties?.BundledSkus ?? [])
+						.filter((item) => item?.BigId)
+						.sort(
+							(a, b) =>
+								Number(b.IsPrimary) - Number(a.IsPrimary) ||
+								(a.DisplayRank ?? 0) - (b.DisplayRank ?? 0),
+						)
+						.map((item) => [item.BigId, item] as const)
+				})
+				.values(),
+		).values(),
+	]
+
+	const relatedBundles = [
+		...new Set(
+			(product.MarketProperties ?? []).flatMap((marketProperty) => {
+				return (marketProperty.RelatedProducts ?? [])
+					.filter(
+						(related) =>
+							related.RelationshipType === 'Bundle' && related.RelatedProductId,
+					)
+					.map((related) => related.RelatedProductId)
+			}),
+		),
+	]
+
+	return (
+		<div className="space-y-4">
 			{product && (
 				<>
 					<Card>
 						<CardHeader>
-							<h2 className="text-xl font-semibold">
-								{product.LocalizedProperties?.[0]?.ProductTitle || 'No Title'}
-							</h2>
-							<div>
+							<div className="flex flex-wrap items-start justify-between gap-3">
+								<div>
+									<h2 className="text-xl font-semibold">
+										{product.LocalizedProperties?.[0]?.ProductTitle ||
+											'No Title'}
+									</h2>
+									<div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+										<Badge variant="outline">
+											{product.ProductType || 'Unknown Type'}
+										</Badge>
+										<span>
+											{product.LocalizedProperties?.[0]?.PublisherName ||
+												'Unknown publisher'}
+										</span>
+										<code className="font-mono text-xs">
+											{product.ProductId}
+										</code>
+									</div>
+								</div>
 								<Badge variant="outline">
-									{product.ProductType || 'Unknown Type'}
+									{product.Properties?.Category || 'Unknown category'}
 								</Badge>
 							</div>
 						</CardHeader>
@@ -60,6 +122,67 @@ export const ProductSchemaUI = ({ product }: { product: Product }) => {
 							</dl>
 						</CardContent>
 					</Card>
+
+					{(bundledProducts.length > 0 || relatedBundles.length > 0) && (
+						<Card>
+							<CardHeader>
+								<h3 className="text-lg font-semibold">Bundles & packages</h3>
+							</CardHeader>
+							<CardContent className="grid gap-6 md:grid-cols-2">
+								{bundledProducts.length > 0 && (
+									<div>
+										<h4 className="text-sm font-semibold">
+											This product bundles
+										</h4>
+										<p className="mt-1 text-xs text-muted-foreground">
+											Content packages live on the bundled products.
+										</p>
+										<ul className="mt-2 space-y-1 text-sm">
+											{bundledProducts.map((item) => (
+												<li
+													key={item.BigId}
+													className="flex flex-wrap items-center gap-2"
+												>
+													<StyledLink to={productHref(item.BigId)}>
+														<span className="font-mono text-xs">
+															{item.BigId}
+														</span>
+													</StyledLink>
+													{item.IsPrimary && (
+														<Badge variant="outline" className="text-[10px]">
+															primary
+														</Badge>
+													)}
+												</li>
+											))}
+										</ul>
+									</div>
+								)}
+
+								{relatedBundles.length > 0 && (
+									<div>
+										<h4 className="text-sm font-semibold">
+											Sold in these bundles
+										</h4>
+										<p className="mt-1 text-xs text-muted-foreground">
+											Open a bundle for its price and availability.
+										</p>
+										<ul className="mt-2 space-y-1 text-sm">
+											{relatedBundles.map((bundleId) => (
+												<li key={bundleId}>
+													<StyledLink to={productHref(bundleId)}>
+														<span className="font-mono text-xs">
+															{bundleId}
+														</span>
+													</StyledLink>
+												</li>
+											))}
+										</ul>
+									</div>
+								)}
+							</CardContent>
+						</Card>
+					)}
 
 					<Card>
 						<CardHeader>
@@ -117,11 +240,7 @@ const SkuCard = ({ sku }: { sku: Sku }) => {
 			</div>
 			<dl className="grid grid-cols-2 gap-2">
 				<dt className="font-semibold">Last Modified:</dt>
-				<dd>
-					{sku.LastModifiedDate
-						? new Date(sku.LastModifiedDate).toLocaleString()
-						: 'N/A'}
-				</dd>
+				<dd>{formatDateTime(sku.LastModifiedDate)}</dd>
 
 				<dt className="font-semibold">Product ID:</dt>
 				<dd>{sku.ProductId || 'N/A'}</dd>
@@ -147,11 +266,7 @@ const SkuCard = ({ sku }: { sku: Sku }) => {
 					<>
 						<dt className="font-semibold">First Available:</dt>
 						<dd>
-							{sku.MarketProperties[0].FirstAvailableDate
-								? new Date(
-										sku.MarketProperties[0].FirstAvailableDate,
-									).toLocaleDateString()
-								: 'N/A'}
+							{formatDateTime(sku.MarketProperties[0].FirstAvailableDate)}
 						</dd>
 
 						<dt className="font-semibold">Markets:</dt>
@@ -176,9 +291,16 @@ const SkuCard = ({ sku }: { sku: Sku }) => {
 				)}
 			</dl>
 
-			<dt className="font-semibold">Packages:</dt>
-			<div className="grid grid-cols-2 gap-2">
-				{sku.Properties.Packages.map((pkg, index) => (
+			<div>
+				<h3 className="text-sm font-semibold">
+					Packages{' '}
+					<span className="font-normal text-muted-foreground">
+						({(sku.Properties?.Packages ?? []).length})
+					</span>
+				</h3>
+			</div>
+			<div className="grid gap-3 lg:grid-cols-2">
+				{(sku.Properties?.Packages ?? []).map((pkg, index) => (
 					<div key={index}>
 						<ErrorBoundary
 							fallback={
@@ -208,101 +330,137 @@ const SkuCard = ({ sku }: { sku: Sku }) => {
 const PackageCard = ({ package: pkg }: { package: Package }) => {
 	if (!pkg) return null
 
+	const languages = pkg.Languages ?? []
+	const languageNames = uniqueLanguageNames(languages)
+	const platformDependencies = pkg.PlatformDependencies ?? []
+	const downloadUris = pkg.PackageDownloadUris ?? []
+	const features = pkg.FulfillmentData?.PackageFeatures
+
 	return (
-		<Card className="w-full max-w-2xl">
+		<Card className="w-full">
 			<CardHeader>
-				<div className="flex items-center justify-between">
-					<h2 className="text-xl font-semibold">Package ID: {pkg.PackageId}</h2>
+				<div className="flex flex-wrap items-start justify-between gap-2">
+					<div>
+						<h2 className="text-sm font-semibold">Content ID</h2>
+						<code className="font-mono text-xs break-all">{pkg.ContentId}</code>
+					</div>
 					<Badge variant="outline">{pkg.PackageFormat}</Badge>
 				</div>
 			</CardHeader>
-			<CardContent>
-				<dl className="flex flex-col gap-4 text-sm">
-					{[
-						{ label: 'Architecture', value: pkg.Architectures.join(', ') },
-						{
-							label: 'Is Streaming App',
-							value: pkg.IsStreamingApp ? 'Yes' : 'No',
-						},
-						{ label: 'Languages', value: pkg.Languages.join(', ') },
-						{
-							label: 'Max Download Size',
-							value: `${(pkg.MaxDownloadSizeInBytes / (1024 * 1024 * 1024)).toFixed(2)} GB`,
-						},
-						{ label: 'Package Rank', value: pkg.PackageRank },
-						{ label: 'Version', value: pkg.Version },
-						{
-							label: 'Platform Dependencies',
-							value: (
-								<div>
-									{pkg.PlatformDependencies.map((dep, index) => (
-										<div key={index}>
-											{dep.PlatformName} (Min: {dep.MinVersion}, Max Tested:{' '}
-											{dep.MaxTested})
-										</div>
-									))}
-								</div>
-							),
-						},
-						{
-							label: 'Fulfillment Data',
-							value: (
-								<div>
-									<div>Product ID: {pkg.FulfillmentData.ProductId}</div>
-									<div>SKU ID: {pkg.FulfillmentData.SkuId}</div>
-									<div>
-										Package Family Name: {pkg.FulfillmentData.PackageFamilyName}
-									</div>
-								</div>
-							),
-						},
-						{
-							label: 'Package Features',
-							value: (
-								<div>
-									<div>
-										Intelligent Delivery:{' '}
-										{pkg.FulfillmentData.PackageFeatures
-											?.SupportsIntelligentDelivery
-											? 'Yes'
-											: 'No'}
-									</div>
-									<div>
-										Install Features:{' '}
-										{pkg.FulfillmentData.PackageFeatures
-											?.SupportsInstallFeatures
-											? 'Yes'
-											: 'No'}
-									</div>
-									<div>
-										Install Recipes:{' '}
-										{pkg.FulfillmentData.PackageFeatures?.SupportsInstallRecipes
-											? 'Yes'
-											: 'No'}
-									</div>
-								</div>
-							),
-						},
-						{
-							label: 'Download URIs',
-							value: (
-								<div>
-									{pkg.PackageDownloadUris.map((uri, index) => (
-										<div key={index}>
-											Rank {uri.Rank}: {uri.Uri}
-										</div>
-									))}
-								</div>
-							),
-						},
-					].map(({ label, value }) => (
-						<div key={label} className="border-b pb-2">
-							<dt className="mb-1 font-semibold">{label}:</dt>
-							<dd>{value}</dd>
-						</div>
-					))}
+			<CardContent className="space-y-4 text-sm">
+				<dl className="grid gap-3 sm:grid-cols-2">
+					<Detail label="Download size">
+						{formatBytes(pkg.MaxDownloadSizeInBytes)}
+					</Detail>
+					<Detail label="Languages">
+						{languageNames.length
+							? `${languageNames.length} (${languageNames.join(', ')})`
+							: '—'}
+					</Detail>
+					<Detail label="Architecture">
+						{pkg.Architectures?.join(', ') || '—'}
+					</Detail>
+					<Detail label="Package rank">{pkg.PackageRank ?? '—'}</Detail>
+					<Detail label="Version">{pkg.Version || '—'}</Detail>
+					<Detail label="Streaming app">
+						{pkg.IsStreamingApp ? 'Yes' : 'No'}
+					</Detail>
 				</dl>
+
+				<div>
+					<h3 className="mb-1 text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
+						Language tags
+					</h3>
+					<div className="flex flex-wrap gap-1">
+						{languages.length ? (
+							languages.map((language) => (
+								<Badge
+									key={language}
+									variant="secondary"
+									className="font-mono text-[10px]"
+									title={languageName(language)}
+								>
+									{language}
+								</Badge>
+							))
+						) : (
+							<span className="text-xs text-muted-foreground">
+								No language tags reported
+							</span>
+						)}
+					</div>
+				</div>
+
+				<details className="rounded-md border p-3">
+					<summary className="cursor-pointer text-xs font-semibold">
+						Technical details
+					</summary>
+					<dl className="mt-3 space-y-2 text-xs">
+						<Detail label="Package ID">{pkg.PackageId}</Detail>
+						{pkg.FulfillmentData?.PackageFamilyName && (
+							<Detail label="Package family">
+								<code className="font-mono break-all">
+									{pkg.FulfillmentData.PackageFamilyName}
+								</code>
+							</Detail>
+						)}
+						<Detail label="Platform dependencies">
+							{platformDependencies.length ? (
+								platformDependencies.map((dependency, index) => (
+									<div key={index}>
+										{dependency.PlatformName} (Min: {dependency.MinVersion}, Max
+										tested: {dependency.MaxTested})
+									</div>
+								))
+							) : (
+								<span className="text-muted-foreground">—</span>
+							)}
+						</Detail>
+						{features && (
+							<Detail label="Package features">
+								<div>
+									Intelligent delivery:{' '}
+									{features.SupportsIntelligentDelivery ? 'Yes' : 'No'}
+								</div>
+								<div>
+									Install features:{' '}
+									{features.SupportsInstallFeatures ? 'Yes' : 'No'}
+								</div>
+								<div>
+									Install recipes:{' '}
+									{features.SupportsInstallRecipes ? 'Yes' : 'No'}
+								</div>
+							</Detail>
+						)}
+					</dl>
+
+					{downloadUris.length > 0 && (
+						<details className="mt-3">
+							<summary className="cursor-pointer text-xs font-semibold">
+								Download URIs ({downloadUris.length})
+							</summary>
+							<div className="mt-2 space-y-1 text-xs">
+								{downloadUris.map((uri, index) => (
+									<div key={index}>
+										Rank {uri.Rank}: {uri.Uri}
+									</div>
+								))}
+							</div>
+						</details>
+					)}
+				</details>
 			</CardContent>
 		</Card>
+	)
+}
+
+function Detail({ label, children }: { label: string; children: ReactNode }) {
+	return (
+		<div className="border-b pb-2">
+			<dt className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
+				{label}
+			</dt>
+			<dd className="mt-0.5">{children}</dd>
+		</div>
 	)
 }

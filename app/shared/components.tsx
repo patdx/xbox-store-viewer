@@ -1,3 +1,5 @@
+import { useLocation } from 'react-router'
+
 export function StyledLink({
 	children,
 	to,
@@ -14,6 +16,7 @@ export function StyledLink({
 
 export function RegionSelector() {
 	const { market, product } = useParams()
+	const location = useLocation()
 
 	const [lang, region] = market?.split('-') ?? [null, null]
 
@@ -34,7 +37,7 @@ export function RegionSelector() {
 						onChange={(e) => {
 							const lang = e.target.value
 							if (lang) {
-								navigate(`/${lang}-${region}/${product}`, {
+								navigate(`/${lang}-${region}/${product}${location.search}`, {
 									preventScrollReset: true,
 								})
 							}
@@ -58,7 +61,7 @@ export function RegionSelector() {
 						onChange={(e) => {
 							const region = e.target.value
 							if (region) {
-								navigate(`/${lang}-${region}/${product}`, {
+								navigate(`/${lang}-${region}/${product}${location.search}`, {
 									preventScrollReset: true,
 								})
 							}

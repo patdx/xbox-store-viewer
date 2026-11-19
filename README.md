@@ -2,6 +2,10 @@
 
 When I purchased Elden Ring for Xbox in Japan, I originally got a version with Japanese only. But I found that I could get a version with English by changing my Xbox region to the US. I was curious how Xbox decides which version to download, or if there is anyway to inspect the different versions available before going through the trouble of changing my region. Here is a tool to help visualize the info from some Store API that I found. Hopefully it will not be disabled.
 
+## Comparison view
+
+Product pages fetch the same product ID from several store markets (US, JP, GB, and AU by default) and compare the content package, language set, download size, price, and bundle relationships. Use the market chips on the comparison card to add or remove markets, or pass `?compare=US,JP` in the URL.
+
 ## Development
 
 Run the dev server:
